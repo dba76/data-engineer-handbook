@@ -7,7 +7,8 @@ with history as (
         LAG(quality_class, 1) OVER (w) as previous_qc,
         LAG(is_active, 1) OVER (w) as previous_is_active,
         year as current_year
-    from actors WINDOW w as (
+    from actors
+    where year < 2021 WINDOW w as (
             PARTITION BY actorid
             ORDER BY year
         )
@@ -36,7 +37,9 @@ select actorid,
     MIN(current_year) as start_date,
     MAX(current_year) as end_date
 from with_streaks
--- where actorid = 'nm0000366'
 GROUP by actorid,
     is_active,
-    quality_class
+    quality_class,
+    streak_identifier
+order by actorid, streak_identifier 
+    -- where actorid = 'nm0000366'

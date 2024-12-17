@@ -1,0 +1,1 @@
+select * from actors_history_scd  where actorid = 'nm0000366'
